@@ -6,6 +6,10 @@ connectToMongo();
 const app = express();
 const port = 5000;
 
+// express package cors -> helps to fetch api from backend in frontend
+var cors = require("cors");
+app.use(cors());
+
 // mediator
 app.use(express.json());
 // available routes

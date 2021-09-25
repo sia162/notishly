@@ -12,7 +12,7 @@ const bcrypt = require("bcryptjs");
 // ROUTE 1: get all the notes of a logged in user (login required): GET "/api/notes/fetchallnotes"
 router.get("/fetchallnotes", fetchuser, async (req, res) => {
   try {
-    const notes = await Note.find({ usser: req.user.id });
+    const notes = await Note.find({ user: req.user.id });
     res.json(notes);
   } catch (error) {
     console.error(error.message);

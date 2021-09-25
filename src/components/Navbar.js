@@ -1,19 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import noteContext from "../context/notes/noteContext";
 
 export const Navbar = () => {
+  const context = useContext(noteContext);
+  const { userData } = context;
+
   let location = useLocation();
-  useEffect(() => {
-    console.log(location.pathname);
-  }, [location]);
+  let history = useHistory();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    history.push("/login");
+  };
 
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
-            Notishly
+            Notishly | {localStorage.getItem("token") ? userData.name : ""}
           </Link>
           <button
             className="navbar-toggler"
@@ -50,17 +58,28 @@ export const Navbar = () => {
                 </Link>
               </li>
             </ul>
-            <form className="d-flex">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
+            {!localStorage.getItem("token") ? (
+              <form className="d-flex">
+                <Link
+                  className="btn btn-primary mx-2"
+                  to="/login"
+                  role="button"
+                >
+                  Login
+                </Link>
+                <Link
+                  className="btn btn-primary mx-2"
+                  to="/signup"
+                  role="button"
+                >
+                  Signup
+                </Link>
+              </form>
+            ) : (
+              <button className="btn btn-primary mx-2" onClick={handleLogout}>
+                Logout
               </button>
-            </form>
+            )}
           </div>
         </div>
       </nav>
