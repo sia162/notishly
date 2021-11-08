@@ -1,1 +1,3 @@
-# GROUP-32 SE LAB PROJECT - Finderr
+# Notishly - Note Taking App
+
+This is a note taking app made with MERN Stack.
