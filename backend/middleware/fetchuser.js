@@ -11,7 +11,7 @@ const fetchuser = (req, res, next) => {
   }
 
   try {
-    const data = jwt.verify(token, JWT_SECRET); //verifying token
+    const data = jwt.verify(token, JWT_SECRET); //verifying token --> this data will be user and inside it user.id
     req.user = data.user;
     next(); //next funtion here is the getuser function in auth.js
   } catch (error) {
