@@ -5,7 +5,7 @@ const router = express.Router();
 // importing User Model Schema
 const User = require("../models/User");
 
-// validation of data and password security
+// required for validation of data enter and password security hashing and adding salt --> bcrypt package
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 
@@ -16,7 +16,7 @@ const JWT_SECRET = "siyaisagood$girl";
 // user fetch to get data
 const fetchuser = require("../middleware/fetchuser");
 
-//ROUTE 1: create a user using: POST "/api/auth/createuser" no login required
+//ROUTE 1: create a user using: POST "/api/auth/createuser" no login required --> signup api
 router.post(
   "/createuser",
   [
@@ -46,6 +46,7 @@ router.post(
         });
       }
 
+      // MAIN WORK OF CREATING USER:
       // adding salt to password and hashing it
       const salt = await bcrypt.genSalt(10);
       securePass = await bcrypt.hash(req.body.password, salt);
@@ -57,14 +58,13 @@ router.post(
         password: securePass,
       });
 
-      // jwt authentication
+      // jwt authentication --> needed for generating unique token for every user
       const data = {
         user: {
           id: user.id,
         },
       };
       const authtoken = jwt.sign(data, JWT_SECRET); //return a token
-
       success = true;
       res.json({ success, authtoken });
     } catch (err) {
